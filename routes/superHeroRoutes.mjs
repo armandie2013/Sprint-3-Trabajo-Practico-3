@@ -49,6 +49,15 @@ router.post("/heroes/crear", validationDataSuperHeros(), handleValidationErrors,
 router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidationErrors, actualizarSuperheroeController);
 
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 2 FINAL //
+// ------------------------------------------------------------------------------------------------ //
+
+
+// ------------------------------------------------------------------------------------------------ //
+// HABILITAR PARA QUE FUNCIONE //
+// ENDPOINT SPRINT 3 TRABAJO PRACTICO 3 INICIO //
+
+router.get('/heroes/dashboard', obtenerTodosLosSuperheroesController);
+
 
 
 

@@ -13,6 +13,8 @@ import {
   renderizarListaSuperheroes,
 } from "../views/responseView.mjs";
 
+
+
 export async function obtenerSuperheroePorIdController(req, res) {
   try {
     const { id } = req.params;
@@ -20,7 +22,7 @@ export async function obtenerSuperheroePorIdController(req, res) {
     if (!superheroe) {
       return res.status(404).send({ mensaje: "Superheroe no encontrado" });
     }
-    const superheroeFormateado = renderizarSuperheroe(superheroe);
+    const superheroeFormateado = renderizarSuperheroe(superheroe);    
     res.status(200).json(superheroeFormateado);
   } catch (error) {
     res.status(500).send({
@@ -30,19 +32,39 @@ export async function obtenerSuperheroePorIdController(req, res) {
   }
 }
 
+// RENDER EJS
+
 export async function obtenerTodosLosSuperheroesController(req, res) {
   try {
-    const superheroes = await obtenerTodosLosSuperheroes();
-
-    const superheroeFormateados = renderizarListaSuperheroes(superheroes);
-    res.status(200).json(superheroeFormateados);
+    const superheroes = await obtenerTodosLosSuperheroes(); // Obtiene los datos de MongoDB
+    
+    res.render("dashboard", { superheroes }); // Renderiza la vista y pasa los datos
+    
   } catch (error) {
     res.status(500).send({
-      mensaje: "Error al obtener los superheroes",
+      mensaje: "Error al obtener los superhéroes",
       error: error.message,
     });
   }
 }
+
+
+
+// FUNCION ANTERIOR
+
+// // export async function obtenerTodosLosSuperheroesController(req, res) {
+// //   try {
+// //     const superheroes = await obtenerTodosLosSuperheroes();
+
+// //     const superheroeFormateados = renderizarListaSuperheroes(superheroes);
+// //     res.status(200).json(superheroeFormateados);
+// //   } catch (error) {
+// //     res.status(500).send({
+// //       mensaje: "Error al obtener los superheroes",
+// //       error: error.message,
+// //     });
+// //   }
+// // }
 
 export async function buscarSuperheroesPorAtributoController(req, res) {
   try {
