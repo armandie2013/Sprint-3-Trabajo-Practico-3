@@ -59,7 +59,7 @@ const router = express.Router();
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 3 INICIO //
 
 
-
+// Ruta de pueba
 router.get('/test', (req, res) => {
   res.send('Ruta de prueba funcionando');
 });
@@ -67,15 +67,18 @@ router.get('/test', (req, res) => {
 router.get('/heroes/dashboard', obtenerTodosLosSuperheroesController);
 
 router.get('/heroes/crear', (req, res) => {
-  res.render('addSuperhero'); // Asegúrate de que la vista se llama "crear.ejs" y está en la carpeta correcta
+  res.render('addSuperhero');
 });
-router.post('/heroes/crear',crearNuevoSuperheroeController);
+router.post('/heroes/crear', crearNuevoSuperheroeController);
 
 // Ruta para obtener el formulario de edición con los datos del superhéroe
-router.get('/heroes/:id/editar', mostrarFormularioEdicion);
+router.get('/heroes/:id/editar',  mostrarFormularioEdicion);
 
 // Ruta para procesar la edición del superhéroe
-router.put('/heroes/:id/editar', editarSuperheroeController);
+router.put('/heroes/:id/editar', validationDataSuperHeros(), handleValidationErrors, editarSuperheroeController);
+
+// Ruta para eliminar
+router.delete('/heroes/:id', eliminarSuperheroePorIdController);
 
 
 

@@ -177,20 +177,42 @@ export async function eliminarSuperheroePorIdController(req, res) {
   try {
     const { id } = req.params;
     const superheroeEliminado = await eliminarSuperheroePorId(id);
+
     if (!superheroeEliminado) {
       return res
         .status(404)
-        .send({ mensaje: "Id de superheroe no encontrado" });
+        .send({ mensaje: "Id de superhéroe no encontrado" });
     }
-    const superheroeFormateado = renderizarSuperheroe(superheroeEliminado);
-    res.status(200).json(superheroeFormateado);
+
+    // Enviar una redirección en lugar de JSON
+    res.redirect("/api/desa/heroes/dashboard");
   } catch (error) {
+    console.error("Error al eliminar el superhéroe:", error);
     res.status(500).send({
-      mensaje: "Error al eliminar el superheroe por ID",
+      mensaje: "Error al eliminar el superhéroe por ID",
       error: error.message,
     });
   }
 }
+
+// export async function eliminarSuperheroePorIdController(req, res) {
+//   try {
+//     const { id } = req.params;
+//     const superheroeEliminado = await eliminarSuperheroePorId(id);
+//     if (!superheroeEliminado) {
+//       return res
+//         .status(404)
+//         .send({ mensaje: "Id de superheroe no encontrado" });
+//     }
+//     const superheroeFormateado = renderizarSuperheroe(superheroeEliminado);
+//     res.status(200).json(superheroeFormateado);
+//   } catch (error) {
+//     res.status(500).send({
+//       mensaje: "Error al eliminar el superheroe por ID",
+//       error: error.message,
+//     });
+//   }
+// }
 
 // ELIMINAR POR NOMBRE //
 
@@ -233,7 +255,7 @@ export const editarSuperheroeController = async (req, res) => {
   try {
     console.log("Solicitud recibida para editar:", req.params.id);
     console.log("Datos recibidos:", req.body);
-    
+
     const { id } = req.params;
     const {
       nombreSuperHeroe,
