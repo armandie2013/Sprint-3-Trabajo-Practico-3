@@ -7,7 +7,9 @@ import {
   crearNuevoSuperheroeController,
   actualizarSuperheroeController,
   eliminarSuperheroePorIdController,
-  eliminarSuperheroePorNombreController
+  eliminarSuperheroePorNombreController,
+  mostrarFormularioEdicion,
+  editarSuperheroeController
 } from "../controllers/superheroesController.mjs";
 
 import { validationDataSuperHeros } from "../middlewares/validationRules.mjs";
@@ -45,8 +47,8 @@ const router = express.Router();
 // HABILITAR PARA QUE FUNCIONE //
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 2 INICIO //
 
-router.post("/heroes/crear", validationDataSuperHeros(), handleValidationErrors, crearNuevoSuperheroeController);
-router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidationErrors, actualizarSuperheroeController);
+// router.post("/heroes/crear", validationDataSuperHeros(), handleValidationErrors, crearNuevoSuperheroeController);
+// router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidationErrors, actualizarSuperheroeController);
 
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 2 FINAL //
 // ------------------------------------------------------------------------------------------------ //
@@ -56,7 +58,26 @@ router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidatio
 // HABILITAR PARA QUE FUNCIONE //
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 3 INICIO //
 
+
+
+router.get('/test', (req, res) => {
+  res.send('Ruta de prueba funcionando');
+});
+
 router.get('/heroes/dashboard', obtenerTodosLosSuperheroesController);
+
+router.get('/heroes/crear', (req, res) => {
+  res.render('addSuperhero'); // Asegúrate de que la vista se llama "crear.ejs" y está en la carpeta correcta
+});
+router.post('/heroes/crear',crearNuevoSuperheroeController);
+
+// Ruta para obtener el formulario de edición con los datos del superhéroe
+router.get('/heroes/:id/editar', mostrarFormularioEdicion);
+
+// Ruta para procesar la edición del superhéroe
+router.put('/heroes/:id/editar', editarSuperheroeController);
+
+
 
 
 
