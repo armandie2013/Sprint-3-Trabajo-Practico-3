@@ -7,7 +7,9 @@ import {
   crearNuevoSuperheroeController,
   actualizarSuperheroeController,
   eliminarSuperheroePorIdController,
-  eliminarSuperheroePorNombreController
+  eliminarSuperheroePorNombreController,
+  mostrarFormularioEdicion,
+  editarSuperheroeController
 } from "../controllers/superheroesController.mjs";
 
 import { validationDataSuperHeros } from "../middlewares/validationRules.mjs";
@@ -45,10 +47,43 @@ const router = express.Router();
 // HABILITAR PARA QUE FUNCIONE //
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 2 INICIO //
 
-router.post("/heroes/crear", validationDataSuperHeros(), handleValidationErrors, crearNuevoSuperheroeController);
-router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidationErrors, actualizarSuperheroeController);
+// router.post("/heroes/crear", validationDataSuperHeros(), handleValidationErrors, crearNuevoSuperheroeController);
+// router.put("/heroes/actualizar/:id", validationDataSuperHeros(), handleValidationErrors, actualizarSuperheroeController);
 
 // ENDPOINT SPRINT 3 TRABAJO PRACTICO 2 FINAL //
+// ------------------------------------------------------------------------------------------------ //
+
+
+// ------------------------------------------------------------------------------------------------ //
+// HABILITAR PARA QUE FUNCIONE //
+// ENDPOINT SPRINT 3 TRABAJO PRACTICO 3 INICIO //
+
+
+// Ruta de pueba
+router.get('/test', (req, res) => {
+  res.send('Ruta de prueba funcionando');
+});
+
+router.get('/heroes/dashboard', obtenerTodosLosSuperheroesController);
+
+router.get('/heroes/crear', (req, res) => {
+  res.render('addSuperhero');
+});
+// Ruta para crear nuevo superheroe
+router.post('/heroes/crear', validationDataSuperHeros(), handleValidationErrors, crearNuevoSuperheroeController);
+
+// Ruta para obtener el formulario de edición con los datos del superhéroe
+router.get('/heroes/:id/editar',  mostrarFormularioEdicion);
+
+// Ruta para procesar la edición del superhéroe
+router.put('/heroes/:id/editar', validationDataSuperHeros(), handleValidationErrors, editarSuperheroeController);
+// router.put('/heroes/:id/editar', editarSuperheroeController);
+
+// Ruta para eliminar
+router.delete('/heroes/:id', eliminarSuperheroePorIdController);
+
+
+
 
 
 

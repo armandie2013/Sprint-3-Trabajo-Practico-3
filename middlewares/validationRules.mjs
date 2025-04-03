@@ -40,6 +40,27 @@ export const validationDataSuperHeros = () => [
       }
       return true;
     }),
+  
+    
+    body("poderes")
+    .custom((value) => {
+      if (typeof value === "string") {
+        value = value.split(",").map(p => p.trim()); // Convertir string a array
+      }
+
+      if (!Array.isArray(value) || value.length === 0) {
+        throw new Error("Poderes no es un array o está vacío");
+      }
+
+      if (value.some(
+        (poder) => typeof poder !== "string" || poder.length < 3 || poder.length > 60
+      )) {
+        throw new Error("Cada poder debe ser un string entre 3 y 60 caracteres");
+      }
+
+      return true;
+    }),
+];
 
   /*body("poderes")
   .trim()
@@ -55,25 +76,25 @@ export const validationDataSuperHeros = () => [
     .withMessage("Cada poder debe tener entre 3 y 60 caracteres")
     .trim(),*/
 
-  body("poderes")
-    .trim()
-    .notEmpty()
-    .withMessage("La lista de poderes no puede estar vacía")
-    .isArray({ min: 1 })
-    .withMessage("Poderes no es un array o está vacío")
-    .custom((value) => {
-      if (
-        value.some(
-          (poder) =>
-            typeof poder !== "string" ||
-            poder.trim().length < 3 ||
-            poder.trim().length > 60
-        )
-      ) {
-        throw new Error(
-          "Cada poder debe ser un string entre 3 y 60 caracteres"
-        );
-      }
-      return true;
-    }),
-];
+//   body("poderes")
+//     .trim()
+//     .notEmpty()
+//     .withMessage("La lista de poderes no puede estar vacía")
+//     .isArray({ min: 1 })
+//     .withMessage("Poderes no es un array o está vacío")
+//     .custom((value) => {
+//       if (
+//         value.some(
+//           (poder) =>
+//             typeof poder !== "string" ||
+//             poder.trim().length < 3 ||
+//             poder.trim().length > 60
+//         )
+//       ) {
+//         throw new Error(
+//           "Cada poder debe ser un string entre 3 y 60 caracteres"
+//         );
+//       }
+//       return true;
+//     }),
+// ];
