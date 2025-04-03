@@ -40,29 +40,30 @@ export const validationDataSuperHeros = () => [
       }
       return true;
     }),
-  
-    
-    body("poderes")
-    .custom((value) => {
-      if (typeof value === "string") {
-        value = value.split(",").map(p => p.trim()); // Convertir string a array
-      }
 
-      if (!Array.isArray(value) || value.length === 0) {
-        throw new Error("Poderes no es un array o está vacío");
-      }
+  body("poderes").custom((value) => {
+    if (typeof value === "string") {
+      value = value.split(",").map((p) => p.trim()); // Convertir string a array
+    }
 
-      if (value.some(
-        (poder) => typeof poder !== "string" || poder.length < 3 || poder.length > 60
-      )) {
-        throw new Error("Cada poder debe ser un string entre 3 y 60 caracteres");
-      }
+    if (!Array.isArray(value) || value.length === 0) {
+      throw new Error("Poderes no es un array o está vacío");
+    }
 
-      return true;
-    }),
+    if (
+      value.some(
+        (poder) =>
+          typeof poder !== "string" || poder.length < 3 || poder.length > 60
+      )
+    ) {
+      throw new Error("Cada poder debe ser un string entre 3 y 60 caracteres");
+    }
+
+    return true;
+  }),
 ];
 
-  /*body("poderes")
+/*body("poderes")
   .trim()
     .notEmpty()
     .withMessage("La lista de poderes no puede estar vacia")
