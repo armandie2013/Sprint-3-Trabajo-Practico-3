@@ -104,12 +104,40 @@ export async function obtenerSuperheroesMayoresDe30Controller(req, res) {
 
 export async function crearNuevoSuperheroeController(req, res) {
   try {
-    console.log("Datos recibidos:", req.body); // <--- Agregar esto para ver los datos
-    const datos = req.body;
-    const superheroeCreado = await crearNuevoSuperheroe(datos);
+    console.log("Datos recibidos:", req.body);
+
+    const {
+      nombreSuperHeroe,
+      nombreReal,
+      edad,
+      planetaOrigen,
+      debilidad,
+      poderes,
+      aliados,
+      enemigos,
+    } = req.body;
+
+    const nuevoSuperheroe = {
+      nombreSuperHeroe,
+      nombreReal,
+      edad,
+      planetaOrigen,
+      debilidad,
+      poderes: Array.isArray(poderes)
+        ? poderes
+        : poderes.split(",").map((p) => p.trim()),
+      aliados: Array.isArray(aliados)
+        ? aliados
+        : aliados.split(",").map((a) => a.trim()),
+      enemigos: Array.isArray(enemigos)
+        ? enemigos
+        : enemigos.split(",").map((e) => e.trim()),
+    };
+
+    const superheroeCreado = await crearNuevoSuperheroe(nuevoSuperheroe);
 
     if (!superheroeCreado) {
-      return res.status(404).send({ mensaje: "Superheroe no encontrado" });
+      return res.status(404).send({ mensaje: "Error al crear el superhéroe" });
     }
 
     res.redirect("/api/desa/heroes/dashboard"); // Redirige al dashboard después de crear
@@ -120,26 +148,6 @@ export async function crearNuevoSuperheroeController(req, res) {
     });
   }
 }
-
-// export async function crearNuevoSuperheroeController(req, res) {
-//   try {
-//     const datos = req.body;
-//     const superheroeCreado = await crearNuevoSuperheroe(datos);
-//     if (!superheroeCreado) {
-//       return res.status(404).send({ mensaje: "Superheroe no econtrado" });
-//     }
-//     res.redirect('heroes/dashboard');
-//     const superheroeFormateado = renderizarSuperheroe(superheroeCreado);
-
-//     // res.status(200).json(superheroeFormateado);
-//   } catch (error) {
-//     res.status(500).send({
-//       mensaje: "Error al crear el nuevo superheroe",
-//       error: error.message,
-//     });
-//   }
-// }
-// // res.render("crear", { datos }); // Renderiza la vista y pasa los datos
 
 // ACTUALIZAR SUPERHEROE POR ID //
 
@@ -195,25 +203,6 @@ export async function eliminarSuperheroePorIdController(req, res) {
   }
 }
 
-// export async function eliminarSuperheroePorIdController(req, res) {
-//   try {
-//     const { id } = req.params;
-//     const superheroeEliminado = await eliminarSuperheroePorId(id);
-//     if (!superheroeEliminado) {
-//       return res
-//         .status(404)
-//         .send({ mensaje: "Id de superheroe no encontrado" });
-//     }
-//     const superheroeFormateado = renderizarSuperheroe(superheroeEliminado);
-//     res.status(200).json(superheroeFormateado);
-//   } catch (error) {
-//     res.status(500).send({
-//       mensaje: "Error al eliminar el superheroe por ID",
-//       error: error.message,
-//     });
-//   }
-// }
-
 // ELIMINAR POR NOMBRE //
 
 export async function eliminarSuperheroePorNombreController(req, res) {
@@ -235,6 +224,7 @@ export async function eliminarSuperheroePorNombreController(req, res) {
   }
 }
 
+// MOSTRAR EL FORMULARIO CON LOS DATOS ANTES DE LA EDICION
 export async function mostrarFormularioEdicion(req, res) {
   try {
     const { id } = req.params;
@@ -251,6 +241,7 @@ export async function mostrarFormularioEdicion(req, res) {
   }
 }
 
+// EDITA CUAL QUIER CAMPO RECIBIENDO LOS DATOS DEL FORMULARIO
 export const editarSuperheroeController = async (req, res) => {
   try {
     console.log("Solicitud recibida para editar:", req.params.id);
@@ -275,9 +266,15 @@ export const editarSuperheroeController = async (req, res) => {
       edad,
       planetaOrigen,
       debilidad,
-      poderes: Array.isArray(poderes) ? poderes : poderes.split(",").map(p => p.trim()),
-      aliados: Array.isArray(aliados) ? aliados : aliados.split(",").map(a => a.trim()),
-      enemigos: Array.isArray(enemigos) ? enemigos : enemigos.split(",").map(e => e.trim()),
+      poderes: Array.isArray(poderes)
+        ? poderes
+        : poderes.split(",").map((p) => p.trim()),
+      aliados: Array.isArray(aliados)
+        ? aliados
+        : aliados.split(",").map((a) => a.trim()),
+      enemigos: Array.isArray(enemigos)
+        ? enemigos
+        : enemigos.split(",").map((e) => e.trim()),
     };
 
     const updatedHero = await actualizarSuperheroe(id, updatedData);
@@ -292,98 +289,3 @@ export const editarSuperheroeController = async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 };
-
-
-
-// export const editarSuperheroeController = async (req, res) => {
-//   try {
-//     console.log("Solicitud recibida para editar:", req.params.id);
-//     console.log("Datos recibidos:", req.body);
-
-//     const { id } = req.params;
-//     const {
-//       nombreSuperHeroe,
-//       nombreReal,
-//       edad,
-//       planetaOrigen,
-//       debilidad,
-//       poderes,
-//       aliados,
-//       enemigos,
-//     } = req.body;
-
-//     const updatedData = {
-//       nombreSuperHeroe,
-//       nombreReal,
-//       edad,
-//       planetaOrigen,
-//       debilidad,
-//       poderes: Array.isArray(poderes) ? poderes : (poderes ? poderes.split(",").map(p => p.trim()) : []),
-//       aliados: Array.isArray(aliados) ? aliados : (aliados ? aliados.split(",").map(a => a.trim()) : []),
-//       enemigos: Array.isArray(enemigos) ? enemigos : (enemigos ? enemigos.split(",").map(e => e.trim()) : []),
-//     };
-
-//     console.log("Datos transformados:", updatedData);
-
-//     const updatedHero = await actualizarSuperheroe(id, updatedData);
-
-//     if (!updatedHero) {
-//       return res.status(404).send("Superhéroe no encontrado");
-//     }
-
-//     res.redirect("/api/desa/heroes/dashboard"); // Redirige al dashboard tras la edición
-//   } catch (error) {
-//     console.error("Error al editar el superhéroe:", error);
-//     res.status(500).send("Error interno del servidor");
-//   }
-// };
-
-
-
-
-
-
-
-
-
-
-// export const editarSuperheroeController = async (req, res) => {
-//   try {
-//     console.log("Solicitud recibida para editar:", req.params.id);
-//     console.log("Datos recibidos:", req.body);
-
-//     const { id } = req.params;
-//     const {
-//       nombreSuperHeroe,
-//       nombreReal,
-//       edad,
-//       planetaOrigen,
-//       debilidad,
-//       poderes,
-//       aliados,
-//       enemigos,
-//     } = req.body;
-
-//     const updatedData = {
-//       nombreSuperHeroe,
-//       nombreReal,
-//       edad,
-//       planetaOrigen,
-//       debilidad,
-//       poderes: poderes ? poderes.split(",").map(p => p.trim()) : [], // Convertir a array
-//       aliados: aliados ? aliados.split(",").map(a => a.trim()) : [], // Convertir a array
-//       enemigos: enemigos ? enemigos.split(",").map(e => e.trim()) : [], // Convertir a array
-//     };
-
-//     const updatedHero = await actualizarSuperheroe(id, updatedData);
-
-//     if (!updatedHero) {
-//       return res.status(404).send("Superhéroe no encontrado");
-//     }
-
-//     res.redirect("/api/desa/heroes/dashboard"); // Redirige al dashboard tras la edición
-//   } catch (error) {
-//     console.error("Error al editar el superhéroe:", error);
-//     res.status(500).send("Error interno del servidor");
-//   }
-// };
