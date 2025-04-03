@@ -274,10 +274,12 @@ export const editarSuperheroeController = async (req, res) => {
       edad,
       planetaOrigen,
       debilidad,
-      poderes: poderes ? poderes.split(",").map(p => p.trim()) : [], // Convertir a array
-      aliados: aliados ? aliados.split(",").map(a => a.trim()) : [], // Convertir a array
-      enemigos: enemigos ? enemigos.split(",").map(e => e.trim()) : [], // Convertir a array
+      poderes: Array.isArray(poderes) ? poderes : (poderes ? poderes.split(",").map(p => p.trim()) : []),
+      aliados: Array.isArray(aliados) ? aliados : (aliados ? aliados.split(",").map(a => a.trim()) : []),
+      enemigos: Array.isArray(enemigos) ? enemigos : (enemigos ? enemigos.split(",").map(e => e.trim()) : []),
     };
+
+    console.log("Datos transformados:", updatedData);
 
     const updatedHero = await actualizarSuperheroe(id, updatedData);
 
@@ -291,3 +293,45 @@ export const editarSuperheroeController = async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 };
+
+
+// export const editarSuperheroeController = async (req, res) => {
+//   try {
+//     console.log("Solicitud recibida para editar:", req.params.id);
+//     console.log("Datos recibidos:", req.body);
+
+//     const { id } = req.params;
+//     const {
+//       nombreSuperHeroe,
+//       nombreReal,
+//       edad,
+//       planetaOrigen,
+//       debilidad,
+//       poderes,
+//       aliados,
+//       enemigos,
+//     } = req.body;
+
+//     const updatedData = {
+//       nombreSuperHeroe,
+//       nombreReal,
+//       edad,
+//       planetaOrigen,
+//       debilidad,
+//       poderes: poderes ? poderes.split(",").map(p => p.trim()) : [], // Convertir a array
+//       aliados: aliados ? aliados.split(",").map(a => a.trim()) : [], // Convertir a array
+//       enemigos: enemigos ? enemigos.split(",").map(e => e.trim()) : [], // Convertir a array
+//     };
+
+//     const updatedHero = await actualizarSuperheroe(id, updatedData);
+
+//     if (!updatedHero) {
+//       return res.status(404).send("Superhéroe no encontrado");
+//     }
+
+//     res.redirect("/api/desa/heroes/dashboard"); // Redirige al dashboard tras la edición
+//   } catch (error) {
+//     console.error("Error al editar el superhéroe:", error);
+//     res.status(500).send("Error interno del servidor");
+//   }
+// };
