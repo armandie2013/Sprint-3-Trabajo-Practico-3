@@ -115,6 +115,7 @@ export async function crearNuevoSuperheroeController(req, res) {
       poderes,
       aliados,
       enemigos,
+      creador,
     } = req.body;
 
     const nuevoSuperheroe = {
@@ -132,9 +133,11 @@ export async function crearNuevoSuperheroeController(req, res) {
       enemigos: Array.isArray(enemigos)
         ? enemigos
         : enemigos.split(",").map((e) => e.trim()),
+        creador,
     };
 
     const superheroeCreado = await crearNuevoSuperheroe(nuevoSuperheroe);
+    console.log("Superhéroe creado con fecha:", superheroeCreado.createdAt);
 
     if (!superheroeCreado) {
       return res.status(404).send({ mensaje: "Error al crear el superhéroe" });
@@ -225,6 +228,7 @@ export async function eliminarSuperheroePorNombreController(req, res) {
 }
 
 // MOSTRAR EL FORMULARIO CON LOS DATOS ANTES DE LA EDICION
+
 export async function mostrarFormularioEdicion(req, res) {
   try {
     const { id } = req.params;
@@ -241,7 +245,8 @@ export async function mostrarFormularioEdicion(req, res) {
   }
 }
 
-// EDITA CUAL QUIER CAMPO RECIBIENDO LOS DATOS DEL FORMULARIO
+// EDITA CUALQUIER CAMPO RECIBIENDO LOS DATOS DEL FORMULARIO
+
 export const editarSuperheroeController = async (req, res) => {
   try {
     console.log("Solicitud recibida para editar:", req.params.id);
@@ -257,9 +262,11 @@ export const editarSuperheroeController = async (req, res) => {
       poderes,
       aliados,
       enemigos,
+      creador,
     } = req.body;
 
     // Asegurarse de que poderes, aliados y enemigos sean arrays reales
+    
     const updatedData = {
       nombreSuperHeroe,
       nombreReal,
@@ -275,6 +282,7 @@ export const editarSuperheroeController = async (req, res) => {
       enemigos: Array.isArray(enemigos)
         ? enemigos
         : enemigos.split(",").map((e) => e.trim()),
+        creador,
     };
 
     const updatedHero = await actualizarSuperheroe(id, updatedData);
