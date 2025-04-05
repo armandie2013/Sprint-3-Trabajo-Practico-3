@@ -262,6 +262,7 @@ export const editarSuperheroeController = async (req, res) => {
       poderes,
       aliados,
       enemigos,
+      creador,
     } = req.body;
 
     // Asegurarse de que poderes, aliados y enemigos sean arrays reales
@@ -281,6 +282,7 @@ export const editarSuperheroeController = async (req, res) => {
       enemigos: Array.isArray(enemigos)
         ? enemigos
         : enemigos.split(",").map((e) => e.trim()),
+        creador,
     };
 
     const updatedHero = await actualizarSuperheroe(id, updatedData);
