@@ -53,49 +53,69 @@ export const validationDataSuperHeros = () => [
     if (
       value.some(
         (poder) =>
-          typeof poder !== "string" || poder.length < 3 || poder.length > 60
+          typeof poder !== "string" ||
+          poder.includes(" ") || 
+          poder.length < 3 || 
+          poder.length > 60
       )
     ) {
-      throw new Error("Cada poder debe ser un string entre 3 y 60 caracteres");
+      throw new Error(
+        "Cada poder no puede estar vacio y debe tener entre 3 y 60 caracteres"
+      );
+    }
+
+    return true;
+  }),
+
+  body("aliados").custom((value) => {
+    if (typeof value === "string") {
+      value = value.split(",").map((a) => a.trim()); // Convierte string a array
+    }
+
+    if (!Array.isArray(value) || value.length === 0) {
+      throw new Error("Aliados no es un array o está vacío");
+    }
+
+    if (
+      value.some(
+        (aliado) =>
+          typeof aliado !== "string" ||
+          aliado.includes(" ") ||
+          aliado.length < 3 ||
+          aliado.length > 60
+      )
+    ) {
+      throw new Error(
+        "Cada aliado no puede estar vacio y debe tener entre 3 y 60 caracteres"
+      );
+    }
+
+    return true;
+  }),
+
+  body("enemigos").custom((value) => {
+    if (typeof value === "string") {
+      value = value.split(",").map((e) => e.trim());
+    }
+
+    if (!Array.isArray(value) || value.length === 0) {
+      throw new Error("Enemigos no es un array o está vacío");
+    }
+
+    if (
+      value.some(
+        (enemigo) =>
+          typeof enemigo !== "string" ||
+          enemigo.includes(" ") ||
+          enemigo.length < 3 ||
+          enemigo.length > 60
+      )
+    ) {
+      throw new Error(
+        "Cada enemigo no puede estar vacio y debe tener entre 3 y 60 caracteres"
+      );
     }
 
     return true;
   }),
 ];
-
-/*body("poderes")
-  .trim()
-    .notEmpty()
-    .withMessage("La lista de poderes no puede estar vacia")
-    .isArray({ min: 1 })
-    .withMessage("Poderes no es un array valido o está vacío"),
-
-  body("poderes.*")
-    .isString()
-    .withMessage("Cada poder debe ser una cadena de texto")
-    .isLength({ min: 3, max: 60 })
-    .withMessage("Cada poder debe tener entre 3 y 60 caracteres")
-    .trim(),*/
-
-//   body("poderes")
-//     .trim()
-//     .notEmpty()
-//     .withMessage("La lista de poderes no puede estar vacía")
-//     .isArray({ min: 1 })
-//     .withMessage("Poderes no es un array o está vacío")
-//     .custom((value) => {
-//       if (
-//         value.some(
-//           (poder) =>
-//             typeof poder !== "string" ||
-//             poder.trim().length < 3 ||
-//             poder.trim().length > 60
-//         )
-//       ) {
-//         throw new Error(
-//           "Cada poder debe ser un string entre 3 y 60 caracteres"
-//         );
-//       }
-//       return true;
-//     }),
-// ];
