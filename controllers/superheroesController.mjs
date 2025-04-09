@@ -105,7 +105,7 @@ export async function obtenerSuperheroesMayoresDe30Controller(req, res) {
 export async function crearNuevoSuperheroeController(req, res) {
   try {
     console.log("Datos recibidos:", req.body);
-
+    
     const {
       nombreSuperHeroe,
       nombreReal,
